@@ -1,0 +1,20 @@
+﻿version: 2
+models:
+  - name: stg_accounts
+    description: One row per account (grain = account_id).
+    columns:
+      - name: account_id
+        tests: [unique, not_null]
+      - name: acquisition_channel
+        tests:
+          - accepted_values:
+              arguments: {values: [organic, paid_search, paid_social, referral, outbound]}
+  - name: stg_subscriptions
+    description: One row per subscription segment (an upgrade closes one segment and opens the next).
+    columns:
+      - name: account_id
+        tests:
+          - not_null
+          - relationships: {arguments: {to: ref('stg_accounts'), field: account_id}}
+      - name: mrr
+        tests: [not_null]
