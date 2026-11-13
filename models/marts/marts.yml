@@ -1,0 +1,23 @@
+﻿version: 2
+models:
+  - name: fct_funnel
+    description: "Signup-to-activation-to-paid funnel. Grain: signup_month x acquisition_channel. Activation = project created AND teammate invited within 7 days."
+    columns:
+      - name: signups
+        tests: [not_null]
+  - name: fct_account_mrr_monthly
+    description: "End-of-month MRR per account. Grain: account_id x month_end. An account is billed in a month if a subscription segment is open on the last day."
+    columns:
+      - name: account_id
+        tests: [not_null]
+  - name: fct_mrr_bridge
+    description: "Monthly MRR bridge: new + expansion + contraction + churn = closing - opening. Grain: month_end."
+    columns:
+      - name: month_end
+        tests: [unique, not_null]
+  - name: fct_revenue_retention
+    description: "Trailing-12-month NRR and GRR over the cohort of accounts paying 12 months earlier. GRR caps each account at its starting MRR."
+    columns:
+      - name: month_end
+        tests: [unique, not_null]
+
