@@ -1,0 +1,10 @@
+﻿name: saas_funnel
+version: "1.0"
+config-version: 2
+profile: saas_funnel
+model-paths: ["models"]
+test-paths: ["tests"]
+models:
+  saas_funnel:
+    staging: {+materialized: view}
+    marts: {+materialized: table}
